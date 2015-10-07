@@ -1,0 +1,25 @@
+{
+  "name": "cms-react-firebase",
+  "version": "0.1.0",
+  "description": "A simple unhosted CMS built with React and Firebase.",
+  "main": "index.js",
+  "scripts": {
+    "build:js": "browserify ./src/app.js -d -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "build": "watch \"npm run build:js\" ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam Brown",
+  "license": "BSD-2-Clause",
+
+  "devDependencies": {
+    "babelify": "^6.2.0",
+    "browserify": "^11.0.1",
+    "watch": "^0.16.0"
+  },
+  "dependencies": {
+    "firebase": "^2.2.9",
+    "markdown": "^0.5.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3"
+  }
+}
