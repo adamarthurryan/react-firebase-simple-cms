@@ -4,22 +4,24 @@
   "description": "A simple unhosted CMS built with React and Firebase.",
   "main": "index.js",
   "scripts": {
-    "build:js": "browserify ./src/app.js -d -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
-    "build": "watch \"npm run build:js\" ./src",
+    "watch": "watchify ./src/app.js -d -v -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "build": "browserify ./src/app.js -d --no-bundle-external -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "serve": "http-server ./public -p 8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adam Brown",
   "license": "BSD-2-Clause",
-
   "devDependencies": {
     "babelify": "^6.2.0",
     "browserify": "^11.0.1",
+    "http-server": "^0.8.5",
     "watch": "^0.16.0"
   },
   "dependencies": {
-    "firebase": "^2.2.9",
+    "firebase": "^2.3.1",
     "markdown": "^0.5.0",
     "react": "^0.13.3",
-    "react-router": "^0.13.3"
+    "react-router": "^1.0.0-rc1",
+    "reactfire": "^0.5.1"
   }
 }

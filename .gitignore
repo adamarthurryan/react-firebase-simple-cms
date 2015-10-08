@@ -1,1 +1,4 @@
 node_modules
+public/lib
+public/all.js
+npm-debug.log
