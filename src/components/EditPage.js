@@ -1,6 +1,9 @@
 import React from 'react';
 import {fb} from "../firebase"
 
+//rewrite to create page automatically
+//then have button for delete
+
 export default class EditPage extends React.Component {
     
     componentWillMount() {
@@ -21,12 +24,14 @@ export default class EditPage extends React.Component {
       else {
         this.state.title="";
         this.state.body="";
+        console.log(this.props.authData);
         this.state.owner=this.props.authData.uid;
       }
     }
 
     componentWillUnmount() {
-      this.fbRef.off();
+      if (this.fbRef)
+        this.fbRef.off();
     }
 
     //called when the firebase record changes or has a value
@@ -82,7 +87,7 @@ export default class EditPage extends React.Component {
         console.log("page save exception", ex);
       }
 
-      return false;
+      evt.preventDefault()
     }
 
 }

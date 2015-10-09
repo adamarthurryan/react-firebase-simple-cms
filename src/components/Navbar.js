@@ -5,6 +5,7 @@ import {fb} from "../firebase.js"
 export default class Navbar extends React.Component {
 
   render() {
+
     //adapted  from Founation documentation
     return <nav className="top-bar" data-topbar role="navigation">
       <ul className="title-area">
@@ -20,15 +21,44 @@ export default class Navbar extends React.Component {
         </ul>
 
         <ul className="left">
-          <li className="has-dropdown">
-            <a href="#">New</a>
-            <ul className="dropdown">
-              <li><Link to="/admin/pages/new">Page</Link></li>
-            </ul>
-          </li>
+          {this.renderNew()}
+          {this.renderEditView()}
         </ul>
+
       </section>
     </nav>
+  }
+
+  //render the edit items if there is a user logged in
+  renderNew() {
+    if (!this.props.authData)
+      return null;
+
+    return <li className="has-dropdown">
+      <a>New</a>
+        <ul className="dropdown">
+        <li><Link to="/admin/pages/new">Page</Link></li>
+      </ul>
+    </li>
+  }
+
+  renderEditView() {
+    if (!this.props.authData)
+      return null;
+
+    //determine if this is a page view
+    if (this.props.location.pathname.startsWith("/pages/")) {
+      var targetUrl = "/admin/pages/"+this.props.params.id;
+      return <li><Link to={targetUrl}>Edit</Link></li>
+    }
+
+    //or a page edit view
+    if (this.props.location.pathname.startsWith("/admin/pages/") && this.props.params.id) {
+      var targetUrl = "/pages/"+this.props.params.id;
+      return <li><Link to={targetUrl}>View</Link></li>
+    }
+    
+    return null;
   }
 
   renderUserDropdown() {

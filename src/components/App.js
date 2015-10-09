@@ -3,6 +3,7 @@ import React from "react"
 import {Link} from "react-router"
 
 import Navbar from "./Navbar.js"
+import PageList from "./PageList.js"
 
 export default class App extends React.Component {
 
@@ -17,16 +18,21 @@ export default class App extends React.Component {
     render () {
     	return <div>
     		<header>
-    			<Navbar authData={this.state.authData}/>
+    			<Navbar location={this.props.location} params={this.props.params} authData={this.state.authData}/>
     		</header>
 
-	   		<div id="app">
-	   			{ (this.props.children) ? 
-	   				React.cloneElement(this.props.children, {authData: this.state.authData }) 
-	   				: null }
+            <div id="app" className="row">
+                <div id="sidebar" className="large-3 columns">
+	   		      <PageList authData={this.state.authData}/>
+            	</div>
+                <div id="content" className="large-9 columns">
+                    { (this.props.children) ? 
+                        React.cloneElement(this.props.children, {authData: this.state.authData }) 
+                        : null }
+                </div>
 			</div>
-	        <footer>
-	        	<p><em>Simple serverless CMS with React and Firebase.</em></p>
+	        <footer className="row">
+	        	<p className="text-right"><em>Simple serverless CMS with React and Firebase.</em></p>
 	        </footer>
 	    </div>
     }

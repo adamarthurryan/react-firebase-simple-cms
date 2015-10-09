@@ -2,14 +2,21 @@ import {fb} from "../firebase"
 import React from "react"
 
 export default class Page extends React.Component {
-	constructor() {
-		super();
-		this.state = {};
-	}
 
     componentWillMount() {
         //mount the listener for this page in firebase
-        fb.child('pages/'+this.props.params.id).on("value", this.updateContent);
+        this.fbRef = fb.child('pages/'+this.props.params.id);
+        this.fbRef.on("value", this.fbOnValue);
+    }
+
+    componentWillReceiveProps(nextProps) {
+    	this.fbRef.off();
+        this.fbRef = fb.child('pages/'+nextProps.params.id);
+        this.fbRef.on("value", this.fbOnValue);
+    }
+
+    componentWillUnmount() {
+    	this.fbRef.off();
     }
 
 	render() {
@@ -21,8 +28,7 @@ export default class Page extends React.Component {
 	}
 
     //called when the firebase record changes or has a value
-    updateContent = snapshot => {
-      console.log("snapshot.val()",snapshot.val());
+    fbOnValue = snapshot => {
       this.setState(snapshot.val());  
     } 
 

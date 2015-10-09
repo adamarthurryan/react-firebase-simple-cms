@@ -36,6 +36,8 @@ export default class Login extends React.Component {
                 if (error) console.log("Error logging user in:",  error)
             }
         );
+
+        evt.preventDefault();
     }
 
     signup = evt => {
@@ -53,7 +55,12 @@ export default class Login extends React.Component {
             }
         );
 
+        evt.preventDefault();
+
     }
         
-    signout = evt => fb.unauth();
+    signout = evt => {
+        fb.unauth();
+        evt.preventDefault();
+    }
 }
