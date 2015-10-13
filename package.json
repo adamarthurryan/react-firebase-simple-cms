@@ -6,7 +6,7 @@
   "scripts": {
     "watch": "watchify ./src/app.js -d -v -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
     "build": "browserify ./src/app.js -d --no-bundle-external -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
-    "serve": "http-server ./public -p 8080",
+    "serve": "node dev/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adam Brown",
@@ -14,11 +14,13 @@
   "devDependencies": {
     "babelify": "^6.2.0",
     "browserify": "^11.0.1",
-    "http-server": "^0.8.5",
+    "connect-history-api-fallback": "^1.1.0",
+    "express": "^4.13.3",
     "watch": "^0.16.0"
   },
   "dependencies": {
     "firebase": "^2.3.1",
+    "history": "^1.12.3",
     "markdown": "^0.5.0",
     "react": "^0.13.3",
     "react-router": "^1.0.0-rc1",

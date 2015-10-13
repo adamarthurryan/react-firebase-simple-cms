@@ -1,5 +1,5 @@
 import React from "react"
-import {Link} from "react-router"
+import {Link, IndexLink} from "react-router"
 import {fb} from "../firebase.js"
 
 export default class Navbar extends React.Component {
@@ -10,7 +10,7 @@ export default class Navbar extends React.Component {
     return <nav className="top-bar" data-topbar role="navigation">
       <ul className="title-area">
         <li className="name">
-          <h1><a href="#">Serverless CMS</a></h1>
+          <h1><Link to="/">Serverless CMS</Link></h1>
         </li>
         <li className="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
@@ -23,6 +23,7 @@ export default class Navbar extends React.Component {
         <ul className="left">
           {this.renderNew()}
           {this.renderEditView()}
+          {this.renderList()}
         </ul>
 
       </section>
@@ -31,42 +32,53 @@ export default class Navbar extends React.Component {
 
   //render the edit items if there is a user logged in
   renderNew() {
-    if (!this.props.authData)
+    if (!this.props.user)
       return null;
 
     return <li className="has-dropdown">
       <a>New</a>
         <ul className="dropdown">
-        <li><Link to="/admin/pages/new">Page</Link></li>
+        <li><Link to="/edit/page/new">Page</Link></li>
       </ul>
     </li>
   }
 
   renderEditView() {
-    if (!this.props.authData)
+    if (!this.props.user)
       return null;
 
     //determine if this is a page view
-    if (this.props.location.pathname.startsWith("/pages/")) {
-      var targetUrl = "/admin/pages/"+this.props.params.id;
+    if (this.props.location.pathname.startsWith("/page/")) {
+      var targetUrl = "/edit/page/"+this.props.params.id;
       return <li><Link to={targetUrl}>Edit</Link></li>
     }
 
     //or a page edit view
-    if (this.props.location.pathname.startsWith("/admin/pages/") && this.props.params.id) {
-      var targetUrl = "/pages/"+this.props.params.id;
+    if (this.props.location.pathname.startsWith("/edit/page/") && this.props.params.id) {
+      var targetUrl = "/page/"+this.props.params.id;
       return <li><Link to={targetUrl}>View</Link></li>
     }
     
     return null;
   }
 
+  //render the item list options
+  renderList() {
+    return <li className="has-dropdown">
+      <a>List</a>
+        <ul className="dropdown">
+        <li><Link to="/page">Pages</Link></li>
+        <li><Link to="/user">Users</Link></li>
+      </ul>
+    </li>
+  }
+
   renderUserDropdown() {
-    if (!this.props.authData)
+    if (!this.props.user)
       return <li><Link to="/login">Log In</Link></li>;
     else {
       return <li className="has-dropdown">
-        <a href="#">{this.props.authData.password.email}</a>
+        <a href="#">{this.props.user.name}</a>
         <ul className="dropdown">
           <li><Link to="" onClick={this.signout}>Log Out</Link></li>
         </ul>

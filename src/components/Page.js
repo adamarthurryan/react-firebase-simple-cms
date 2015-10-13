@@ -1,35 +1,46 @@
-import {fb} from "../firebase"
+import {fb, FBObjectWatcher} from "../firebase"
 import React from "react"
+import {markdown} from "markdown"
+
 
 export default class Page extends React.Component {
 
-    componentWillMount() {
-        //mount the listener for this page in firebase
-        this.fbRef = fb.child('pages/'+this.props.params.id);
-        this.fbRef.on("value", this.fbOnValue);
+  componentWillMount() {
+    this.setState({page:null});
+    this.itemWatcher = new FBObjectWatcher(fb().child('page/'+this.props.params.id));
+    this.itemWatcher.on(item => this.setState({page: item}));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.itemWatcher.off();
+    this.itemWatcher = new FBObjectWatcher(fb().child('page/'+nextProps.params.id));
+    this.itemWatcher.on(item => this.setState({page: item}));
+  }
+
+  componentWillUnmount() {
+    this.itemWatcher.off();
+  }
+
+  render() {
+    console.log("render state", this.state);
+    if (this.state.page) {
+      return <div className="row">
+        <h1 className="large-12 columns">{this.state.page.name}</h1>
+        <div className="large-12 columns">{this.renderPageBody()}</div>
+        <div className="large-12 columns"><em>Key: {this.state.page.key}</em></div>
+      </div>;
     }
+    else 
+      return <div className="row">
+        <p className="large-12 colunns"><em>Loading</em></p>
+      </div>
+  }
 
-    componentWillReceiveProps(nextProps) {
-    	this.fbRef.off();
-        this.fbRef = fb.child('pages/'+nextProps.params.id);
-        this.fbRef.on("value", this.fbOnValue);
+  renderPageBody() {
+    if (this.state.page.body) {
+      var md = markdown.toHTML(this.state.page.body);
+      return <div dangerouslySetInnerHTML={{__html: md}}></div>
     }
-
-    componentWillUnmount() {
-    	this.fbRef.off();
-    }
-
-	render() {
-		return <div className="row">
-			<h1 className="large-12 columns">{this.state.title}</h1>
-			<div className="large-12 columns">{this.state.body}</div>
-			<div className="large-12 columns"><em>Created by {this.state.owner}</em></div>
-		</div>;
-	}
-
-    //called when the firebase record changes or has a value
-    fbOnValue = snapshot => {
-      this.setState(snapshot.val());  
-    } 
+  }
 
 }
