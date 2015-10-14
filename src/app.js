@@ -4,12 +4,11 @@ import createBrowserHistory from 'history/lib/createBrowserHistory'
 import React from "react"
 
 import App from './components/App';
-import Page from './components/Page';
-import User from './components/User';
+import ViewItem from './components/view/ViewItem';
 import Admin from './components/Admin';
 import Login from './components/Login';
-import EditPage from './components/EditPage';
-import EditUser from './components/EditUser';
+import EditItem from './components/edit/EditItem';
+import List from './components/List';
 
 
 //load site data from firebase
@@ -26,27 +25,27 @@ class Empty extends React.Component {
   }
 }
 
-var NewItem = Empty;
-class EditItem = Empty;
-class ViewItem = Empty;
 
 React.render (( 
   <Router history={createBrowserHistory()}>
     <Route path="/" component={App}>
 
+
       <Route path="edit" component={Admin}>
-        <Route path=":type" component={Empty} >
-          <Route path="new" component={NewItem} />
+        <Route path=":type" component={List} >
+          <Route path="new" isNew={true} component={EditItem} />
           <Route path=":id" component={EditItem} />
         </Route>
       </Route>
 
 
-      <Route path="login"  testval="TESTING"  component={Login} />
+      <Route path="login" component={Login} />
 
-      <Route path=":type" component={Empty}>
+      <Route path="list/:type" component={List}>
         <Route path=":id" component={ViewItem} />
       </Route>
+
+      <Route path=":type/:id" component={ViewItem} />
 
 
     </Route>

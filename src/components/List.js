@@ -12,13 +12,13 @@ export default class List extends React.Component {
 
     //create the listeners for this page in firebase
     this.itemsWatcher = new FBSetWatcher(fb().child(this.props.params.type));
-    this.itemsWatcher.on(items => this.setState({type: this.props.params.type, items}));
+    this.itemsWatcher.on(items => this.setState({items}));
   }
 
   componentWillReceiveProps(nextProps) {
     this.itemsWatcher.off();
     this.itemsWatcher = new FBSetWatcher(fb().child(nextProps.params.type));
-    this.itemsWatcher.on(items => this.setState({type: nextProps.params.type, items}));
+    this.itemsWatcher.on(items => this.setState({items}));
   }
 
   componentWillUnmount() {
@@ -26,20 +26,31 @@ export default class List extends React.Component {
   }
 
   render() {
+    console.log(this.props);
+
     var itemLinks =[]; 
     for (var key in this.state.items) {
       itemLinks.push(this.renderItem(key, this.state.items[key]))
     }
 
-    return <div className="row">
-      {itemLinks}
-    </div>;
+    return <div className = "row">
+      <div id="sidebar" className="large-3 columns">
+        <div className="row">
+          {itemLinks}
+        </div>
+      </div>
+      <div id="content" className="large-9 columns">
+        { (this.props.children) ? 
+          React.cloneElement(this.props.children, {user: this.props.user}) 
+          : null }
+      </div>
+    </div>
   }
 
   renderItem(key, item) {
 
     //!!! Where does type get found / passed
-    var targetUrl = `/${this.state.type}/${key}`
+    var targetUrl = `/list/${this.props.params.type}/${key}`
     return <div key={key} ><Link to={targetUrl} activeClassName="active">{item.name}</Link></div>
   }
 

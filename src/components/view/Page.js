@@ -1,4 +1,4 @@
-import {fb, FBObjectWatcher} from "../firebase"
+import {fb, FBObjectWatcher} from "../../firebase"
 import React from "react"
 import {markdown} from "markdown"
 

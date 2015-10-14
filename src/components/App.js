@@ -30,14 +30,9 @@ export default class App extends React.Component {
       </header>
 
       <div id="app" className="row">
-        <div id="sidebar" className="large-3 columns">
-          <List user={this.state.user} params={this.props.params}/>
-        </div>
-        <div id="content" className="large-9 columns">
-          { (this.props.children) ? 
-            React.cloneElement(this.props.children, {user: this.state.user}) 
-            : null }
-        </div>
+        { (this.props.children) ? 
+          React.cloneElement(this.props.children, {user: this.state.user}) 
+          : null }
       </div>
       <footer className="row">
         <p className="text-right"><em>Simple serverless CMS with React and Firebase.</em></p>

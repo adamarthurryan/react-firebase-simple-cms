@@ -4,6 +4,7 @@ import {fb} from "../firebase"
 export default class Login extends React.Component {
   render() {
 
+
     if (this.props.authData)
       return <form>
         <div className='row'> 

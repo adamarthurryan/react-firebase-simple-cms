@@ -55,7 +55,7 @@ export default class Navbar extends React.Component {
 
     //or a page edit view
     if (this.props.location.pathname.startsWith("/edit/page/") && this.props.params.id) {
-      var targetUrl = "/page/"+this.props.params.id;
+      var targetUrl = "/list/page/"+this.props.params.id;
       return <li><Link to={targetUrl}>View</Link></li>
     }
     
@@ -67,8 +67,8 @@ export default class Navbar extends React.Component {
     return <li className="has-dropdown">
       <a>List</a>
         <ul className="dropdown">
-        <li><Link to="/page">Pages</Link></li>
-        <li><Link to="/user">Users</Link></li>
+        <li><Link to="/list/page">Pages</Link></li>
+        <li><Link to="/list/user">Users</Link></li>
       </ul>
     </li>
   }
@@ -88,8 +88,8 @@ export default class Navbar extends React.Component {
   }
 
   signout = evt => {
-    fb.unauth();
-    return false;
+    evt.preventDefault();
+    fb().unauth();
   }
 }
 

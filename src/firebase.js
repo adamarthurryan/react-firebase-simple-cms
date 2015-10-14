@@ -18,14 +18,14 @@ export function fb() {
 // watchers are disposable and only intended for single use
 export class FBUserWatcher {
 	constructor() {
-		this.fbRef = new Firebase(FIREBASE_SITE_PATH);
+		this.fbRef = fb();
 	}
 
 	updateAuth (authData) {
 		this.authData = authData;
 
 		if (this.userRef) {
-			this.userRef.off();
+			//this.userRef.off();
 			this.userRef = null;
 		}
 		else {
@@ -66,8 +66,11 @@ export class FBUserWatcher {
 	// removes the callback for updates to this set of objects
 	//also removes the watchers for the firebase ref
 	off() {
+		
+		//!!! Does this work or not?
 		if (this.userRef)
 			this.userRef.off();
+		
 		this.fbRef.offAuth(this.updateAuth);
 
 		this.callback = null;
@@ -114,7 +117,8 @@ export class FBObjectWatcher {
 		//!!! this bums firebase out for some reason
 		//(a second request for the same data will return null!)
 		//apparently we don't need to call off()?
-		//this.fbRef.off();
+		//but now it works???
+		this.fbRef.off();
 
 		this.callback = null;
 	}
