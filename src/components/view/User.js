@@ -1,33 +1,18 @@
-import {fb, FBObjectWatcher} from "../../firebase"
 import React from "react"
 import {markdown} from "markdown"
 
 
 export default class User extends React.Component {
 
-  componentWillMount() {
-    this.setState({user:null});
-    this.itemWatcher = new FBObjectWatcher(fb().child('user/'+this.props.params.id));
-    this.itemWatcher.on(item => this.setState({user: item}));
-  }
 
-  componentWillReceiveProps(nextProps) {
-    this.itemWatcher.off();
-    this.itemWatcher = new FBObjectWatcher(fb().child('user/'+nextProps.params.id));
-    this.itemWatcher.on(item => this.setState({user: item}));
-  }
-
-  componentWillUnmount() {
-    this.itemWatcher.off();
-  }
 
   render() {
     console.log("render state", this.state);
-    if (this.state.user) {
+    if (this.props.item) {
       return <div className="row">
-        <h1 className="large-12 columns">{this.state.user.name}</h1>
+        <h1 className="large-12 columns">{this.props.item.name}</h1>
         <div className="large-12 columns">{this.renderUserBio()}</div>
-        <div className="large-12 columns"><em>Key: {this.state.user.key}</em></div>
+        <div className="large-12 columns"><em>Key: {this.props.item.key}</em></div>
       </div>;
     }
     else 
@@ -37,8 +22,8 @@ export default class User extends React.Component {
   }
 
   renderUserBio() {
-    if (this.state.user.bio) {
-      var md = markdown.toHTML(this.state.user.bio);
+    if (this.props.item.bio) {
+      var md = markdown.toHTML(this.props.item.bio);
       return <div dangerouslySetInnerHTML={{__html: md}}></div>
     }
   }

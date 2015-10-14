@@ -1,33 +1,17 @@
-import {fb, FBObjectWatcher} from "../../firebase"
 import React from "react"
 import {markdown} from "markdown"
 
 
 export default class Page extends React.Component {
 
-  componentWillMount() {
-    this.setState({page:null});
-    this.itemWatcher = new FBObjectWatcher(fb().child('page/'+this.props.params.id));
-    this.itemWatcher.on(item => this.setState({page: item}));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.itemWatcher.off();
-    this.itemWatcher = new FBObjectWatcher(fb().child('page/'+nextProps.params.id));
-    this.itemWatcher.on(item => this.setState({page: item}));
-  }
-
-  componentWillUnmount() {
-    this.itemWatcher.off();
-  }
 
   render() {
-    console.log("render state", this.state);
-    if (this.state.page) {
+    console.log("render props", this.props);
+    if (this.props.item) {
       return <div className="row">
-        <h1 className="large-12 columns">{this.state.page.name}</h1>
+        <h1 className="large-12 columns">{this.props.item.name}</h1>
         <div className="large-12 columns">{this.renderPageBody()}</div>
-        <div className="large-12 columns"><em>Key: {this.state.page.key}</em></div>
+        <div className="large-12 columns"><em>Key: {this.props.item.key}</em></div>
       </div>;
     }
     else 
@@ -37,8 +21,8 @@ export default class Page extends React.Component {
   }
 
   renderPageBody() {
-    if (this.state.page.body) {
-      var md = markdown.toHTML(this.state.page.body);
+    if (this.props.item.body) {
+      var md = markdown.toHTML(this.props.item.body);
       return <div dangerouslySetInnerHTML={{__html: md}}></div>
     }
   }

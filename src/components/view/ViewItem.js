@@ -1,16 +1,32 @@
+
 import React from "react"
 import Page from "./Page"
 import User from "./User"
 
-import {Link} from "react-router"
+import {fb, FBObjectWatcher} from "../../firebase"
 
+import {Link} from "react-router"
 
 
 export default class ViewItem extends React.Component {
 
-  //to do - the fb data loading logic should happen here
-  render() {
+  componentWillMount() {
+    this.setState({item:null});
+    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.params.type+'/'+this.props.params.id));
+    this.itemWatcher.on(item => this.setState({item: item}));
+  }
 
+  componentWillReceiveProps(nextProps) {
+    this.itemWatcher.off();
+    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.params.type+'/'+nextProps.params.id));
+    this.itemWatcher.on(item => this.setState({item: item}));
+  }
+
+  componentWillUnmount() {
+    this.itemWatcher.off();
+  }
+
+  render() {
     return <div>
       {this.renderItem()}
       <Link to={`/edit/${this.props.params.type}/${this.props.params.id}`}>Edit</Link>
@@ -19,8 +35,8 @@ export default class ViewItem extends React.Component {
 
   renderItem() {
     if (this.props.params.type == 'user')
-      return <User {...this.props}/>
+      return <User {...this.props} item={this.state.item}/>
     else if (this.props.params.type == 'page')
-      return <Page {...this.props}/>
+      return <Page {...this.props} item={this.state.item}/>
   }
 }

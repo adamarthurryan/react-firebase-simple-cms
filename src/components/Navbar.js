@@ -22,7 +22,6 @@ export default class Navbar extends React.Component {
 
         <ul className="left">
           {this.renderNew()}
-          {this.renderEditView()}
           {this.renderList()}
         </ul>
 
@@ -43,24 +42,6 @@ export default class Navbar extends React.Component {
     </li>
   }
 
-  renderEditView() {
-    if (!this.props.user)
-      return null;
-
-    //determine if this is a page view
-    if (this.props.location.pathname.startsWith("/page/")) {
-      var targetUrl = "/edit/page/"+this.props.params.id;
-      return <li><Link to={targetUrl}>Edit</Link></li>
-    }
-
-    //or a page edit view
-    if (this.props.location.pathname.startsWith("/edit/page/") && this.props.params.id) {
-      var targetUrl = "/list/page/"+this.props.params.id;
-      return <li><Link to={targetUrl}>View</Link></li>
-    }
-    
-    return null;
-  }
 
   //render the item list options
   renderList() {

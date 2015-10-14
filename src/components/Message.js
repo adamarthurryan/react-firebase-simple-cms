@@ -5,8 +5,8 @@ export default class Message extends React.Component {
   
   render() {
     console.log(this.props);
-    return <div>
-        <p><em>{this.props.level}</em><span>{this.props.message}</span></p>
+    return <div className='message {this.props.level}'>
+        <p>{this.props.message}</p>
       </div>
   }
 }
