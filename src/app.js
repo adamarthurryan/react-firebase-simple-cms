@@ -9,6 +9,7 @@ import Admin from './components/Admin';
 import Login from './components/Login';
 import EditItem from './components/edit/EditItem';
 import List from './components/List';
+import EditSettings from './components/edit/EditSettings';
 
 
 //load site data from firebase
@@ -30,6 +31,7 @@ React.render ((
   <Router history={createBrowserHistory()}>
     <Route path="/" component={App}>
 
+      <Route path="admin/settings" component={EditSettings}/>
 
       <Route path="edit" component={Admin}>
         <Route path=":type" component={List} >

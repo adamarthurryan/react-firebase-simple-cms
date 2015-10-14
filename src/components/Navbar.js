@@ -5,12 +5,11 @@ import {fb} from "../firebase.js"
 export default class Navbar extends React.Component {
 
   render() {
-
     //adapted  from Founation documentation
     return <nav className="top-bar" data-topbar role="navigation">
       <ul className="title-area">
         <li className="name">
-          <h1><Link to="/">Serverless CMS</Link></h1>
+          <h1><Link to="/">{this.props.settings.name}</Link></h1>
         </li>
         <li className="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
@@ -21,12 +20,20 @@ export default class Navbar extends React.Component {
         </ul>
 
         <ul className="left">
+          {this.renderSettings()}
           {this.renderNew()}
           {this.renderList()}
         </ul>
 
       </section>
     </nav>
+  }
+
+  renderSettings() {
+    if (!this.props.user)
+      return null;
+
+    return <li><Link to="/admin/settings">Settings</Link></li>
   }
 
   //render the edit items if there is a user logged in
@@ -61,14 +68,16 @@ export default class Navbar extends React.Component {
       return <li className="has-dropdown">
         <a href="#">{this.props.user.name}</a>
         <ul className="dropdown">
-          <li><Link to="" onClick={this.signout}>Log Out</Link></li>
+          <li><Link to="#" onclick={this.signout}>Log Out</Link></li>
         </ul>
       </li>
     }
 
   }
 
+  //!!! Why is this never called?
   signout = evt => {
+    console.log("ZZZ")
     evt.preventDefault();
     fb().unauth();
   }

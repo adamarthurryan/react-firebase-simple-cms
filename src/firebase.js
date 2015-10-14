@@ -13,6 +13,10 @@ export function fb() {
 	return fbRef;
 }
 
+//!!! build object defaults into these classes
+//!!! build write capability into these or additional classes
+
+
 // a helper for watching Firebase auth status
 // encapsulates the logic for user records
 // watchers are disposable and only intended for single use
@@ -81,8 +85,6 @@ export class FBUserWatcher {
 // watchers are disposable and only intended for single use
 export class FBObjectWatcher {
 
-
-
 	//constructs a watcher for the given firebase ref
 	constructor(fbRef) {
 		this.callback = null;
@@ -104,10 +106,10 @@ export class FBObjectWatcher {
 
 			//console.log(this.debugCount, snapshot.ref().toString())
 			//console.log(this.debugCount, snapshot.val())
-	
 			var item=snapshot.val();
-		  item.key=snapshot.key();
-    	this.callback(item);
+			item.key=snapshot.key();
+ 		  this.callback(item);
+			
     });
 	}
 
@@ -130,7 +132,8 @@ export class FBSetWatcher {
 
 	//constructs a watcher for the given firebase ref
 	constructor(fbRef) {
-		this.items = {};
+		//use a map instead of a {} object because it respects the order that fields are inserted
+		this.items = new Map();
 		this.callback = null;
 		this.fbRef = fbRef;
 	}
@@ -145,19 +148,19 @@ export class FBSetWatcher {
 		//the first time a child is loaded or when a new child is created
 		//add it to the list
 		this.fbRef.on("child_added", snapshot => {
-			this.items[snapshot.key()]=snapshot.val();
+			this.items.set(snapshot.key(), snapshot.val());
         	this.callback(this.items);
      	});
 
 		//remove a child from the list when notified by firebase
        	this.fbRef.on("child_removed", snapshot => {
-	        delete this.items[snapshot.key()];
-			this.callback(this.items);
+	        this.items.delete(snapshot.key());
+					this.callback(this.items);
        	});
 
 		//update a child in the list when notified by firebase
        	this.fbRef.on("child_changed", snapshot => {
-        	this.items[snapshot.key()] = snapshot.val();
+					this.items.set(snapshot.key(), snapshot.val());
 					this.callback(this.items);
        	});
 	}
