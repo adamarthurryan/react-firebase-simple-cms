@@ -11,6 +11,8 @@ import {fb} from "../../firebase"
 // !!! should the individual edit components extend this as a base class instead?
 // then the individual edit components could be selected in the route
 
+// !!! parameters: manual set type, allowDelete
+
 export default class EditItem extends React.Component {
   constructor() {
     super();
@@ -130,3 +132,5 @@ export default class EditItem extends React.Component {
   }
 
 }
+
+EditItem.defaultProps = {allowDelete: true, isNew: false};
