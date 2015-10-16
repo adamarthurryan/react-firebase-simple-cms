@@ -1,7 +1,10 @@
 
 import React from "react"
+
 import Page from "./Page"
 import User from "./User"
+import Setting from "./Setting"
+import Message from "../Message"
 
 import {fb, FBObjectWatcher} from "../../firebase"
 
@@ -27,6 +30,10 @@ export default class ViewItem extends React.Component {
   }
 
   render() {
+    if (! this.state.item) 
+      return <Message message="Loading..."/>
+
+
     return <div>
       {this.renderItem()}
       <Link to={`/edit/${this.props.params.type}/${this.props.params.id}`}>Edit</Link>
@@ -38,5 +45,7 @@ export default class ViewItem extends React.Component {
       return <User {...this.props} item={this.state.item}/>
     else if (this.props.params.type == 'page')
       return <Page {...this.props} item={this.state.item}/>
+    else if (this.props.params.type == 'setting')
+      return <Setting {...this.props} item={this.state.item}/>
   }
 }

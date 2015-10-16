@@ -15,7 +15,8 @@ export function fb() {
 
 //!!! build object defaults into these classes
 //!!! build write capability into these or additional classes
-
+//!!! should the fbRefs be weak references? would that help with releasing callbacks?
+//!!! is it even a concern that callbacks should be turned off?
 
 // a helper for watching Firebase auth status
 // encapsulates the logic for user records
@@ -29,11 +30,9 @@ export class FBUserWatcher {
 		this.authData = authData;
 
 		if (this.userRef) {
+			//!!! do we need to unregister this callback?
 			//this.userRef.off();
 			this.userRef = null;
-		}
-		else {
-			this.callback(null);
 		}
 
 		if (this.authData) {
@@ -47,10 +46,13 @@ export class FBUserWatcher {
 					user.name=authData.password.email;
 					user.email=authData.password.email;
 				}
-				user.key=snapshot.key();
+				user._key=snapshot.key();
 
 				this.callback(user);
 			});
+		}
+		else {
+			this.callback(null);
 		}
 	}
 
@@ -106,8 +108,12 @@ export class FBObjectWatcher {
 
 			//console.log(this.debugCount, snapshot.ref().toString())
 			//console.log(this.debugCount, snapshot.val())
+
 			var item=snapshot.val();
-			item.key=snapshot.key();
+			if (!item)
+				return item;
+
+			item._key=snapshot.key();
  		  this.callback(item);
 			
     });
@@ -120,7 +126,7 @@ export class FBObjectWatcher {
 		//(a second request for the same data will return null!)
 		//apparently we don't need to call off()?
 		//but now it works???
-		this.fbRef.off();
+		//this.fbRef.off();
 
 		this.callback = null;
 	}

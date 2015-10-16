@@ -26,4 +26,6 @@ https://www.firebase.com/docs/hosting/guide/url-redirects-rewrites.html
 
 ## Features
 
-Item edits should have revisions. How to know when a checkpoint occurs? Perhaps all edits occur on draft revisions, which are then "published" (or not).
+- Item edits should have revisions. How to know when a checkpoint occurs? Perhaps all edits occur on draft revisions, which are then "published" (or not).
+
+- Internal links between pages? An ability to set a frontpage? Both require permalinks.

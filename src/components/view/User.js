@@ -7,18 +7,11 @@ export default class User extends React.Component {
 
 
   render() {
-    console.log("render state", this.state);
-    if (this.props.item) {
-      return <div className="row">
-        <h1 className="large-12 columns">{this.props.item.name}</h1>
-        <div className="large-12 columns">{this.renderUserBio()}</div>
-        <div className="large-12 columns"><em>Key: {this.props.item.key}</em></div>
-      </div>;
-    }
-    else 
-      return <div className="row">
-        <p className="large-12 colunns"><em>Loading</em></p>
-      </div>
+    return <div className="row">
+      <h1 className="large-12 columns">{this.props.item.name}</h1>
+      <div className="large-12 columns">{this.renderUserBio()}</div>
+      <div className="large-12 columns"><em>Key: {this.props.item.key}</em></div>
+    </div>;
   }
 
   renderUserBio() {

@@ -4,9 +4,10 @@
   "description": "A simple unhosted CMS built with React and Firebase.",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify ./src/app.js -d -v -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
-    "build": "browserify ./src/app.js -d --no-bundle-external -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
-    "serve": "node dev/server.js",
+    "watch:dev": "watchify ./src/app.js -d -v -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "watch": "watchify ./src/app.js  -v -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "build:dev": "browserify ./src/app.js -d --no-bundle-external -t [ babelify --optional es7.classProperties ] --outfile public/all.js",
+    "serve:dev": "node dev/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adam Brown",

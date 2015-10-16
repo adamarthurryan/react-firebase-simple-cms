@@ -6,7 +6,7 @@ import Navbar from "./Navbar"
 import List from "./List"
 import Login from "./Login"
 
-const defaultSettings = {name: "Serverless CMS"};
+const defaultSettings = {site: {name: "Serverless CMS"}};
 
 export default class App extends React.Component {
 
@@ -14,7 +14,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.fbUserWatcher = new FBUserWatcher();
-    this.fbSettingsWatcher = new FBObjectWatcher(fb().child("settings"));
+    this.fbSettingsWatcher = new FBObjectWatcher(fb().child("setting"));
     this.state = {settings: defaultSettings};
   }
 
@@ -35,7 +35,6 @@ export default class App extends React.Component {
   updateSettings = settings => {
     //only update settings if they were found in the db
     //otherwise use default settings
-    console.log("updateSettings", settings)
     if (settings)
       this.setState({settings});
     else

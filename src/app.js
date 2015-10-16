@@ -9,7 +9,6 @@ import Admin from './components/Admin';
 import Login from './components/Login';
 import EditItem from './components/edit/EditItem';
 import List from './components/List';
-import EditSettings from './components/edit/EditSettings';
 
 
 //load site data from firebase
@@ -26,12 +25,14 @@ class Empty extends React.Component {
   }
 }
 
+//!!! should the routes be more predetermined?
+//ie. should the routes list every possible permissible edit, new, list, etc. option?
+//as it is now, users can attempt to create/view arbitrary content by manipulating the url
 
 React.render (( 
   <Router history={createBrowserHistory()}>
     <Route path="/" component={App}>
 
-      <Route path="admin/settings" component={EditSettings}/>
 
       <Route path="edit" component={Admin}>
         <Route path=":type" component={List} >

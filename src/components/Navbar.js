@@ -9,7 +9,7 @@ export default class Navbar extends React.Component {
     return <nav className="top-bar" data-topbar role="navigation">
       <ul className="title-area">
         <li className="name">
-          <h1><Link to="/">{this.props.settings.name}</Link></h1>
+          <h1><Link to="/">{this.props.settings.site.title}</Link></h1>
         </li>
         <li className="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
@@ -33,7 +33,7 @@ export default class Navbar extends React.Component {
     if (!this.props.user)
       return null;
 
-    return <li><Link to="/admin/settings">Settings</Link></li>
+    return <li><Link to="/edit/setting">Settings</Link></li>
   }
 
   //render the edit items if there is a user logged in

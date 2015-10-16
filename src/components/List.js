@@ -29,7 +29,6 @@ export default class List extends React.Component {
   }
 
   render() {
-    console.log(this.state.items);
 
     if (!this.state.items) {
       return <Message message="Loading..."/>
@@ -40,10 +39,10 @@ export default class List extends React.Component {
       itemLinks.push(this.renderItem(key, item))
     }
 
-    console.log(itemLinks);
 
     return <div className = "row">
       <div id="sidebar" className="large-3 columns">
+        <h1>{this.props.params.type}</h1>
         <ul className="side-nav">
           {itemLinks}
         </ul>
