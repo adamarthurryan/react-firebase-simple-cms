@@ -6,9 +6,6 @@ import Navbar from "./Navbar"
 import List from "./List"
 import Login from "./Login"
 
-import NewItem from "./edit/NewItem"
-import EditItem from "./edit/EditItem"
-import ViewItem from "./view/ViewItem"
 
 const defaultSettings = {site: {name: "Serverless CMS"}};
 
@@ -54,10 +51,7 @@ export default class App extends React.Component {
         <Locations>
           <Location path="/" handler={List} type="page" user={this.state.user} settings={this.state.settings} />
           <Location path="/login" handler={Login} user={this.state.user} settings={this.state.settings} />
-          <Location path="/:type/list" handler={List} user={this.state.user} settings={this.state.settings} />
-          <Location path="/:type/new" handler={NewItem} user={this.state.user} settings={this.state.settings} />
-          <Location path="/:type/:id/edit" handler={EditItem} user={this.state.user} settings={this.state.settings} />
-          <Location path="/:type/:id" handler={ViewItem} user={this.state.user} settings={this.state.settings} />
+          <Location path="/:type(/.*)*" handler={List} user={this.state.user} settings={this.state.settings} />
         </Locations>
       </div>
       <footer className="row">

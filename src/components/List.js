@@ -1,8 +1,13 @@
 import {fb, FBSetWatcher} from "../firebase"
 import React from "react"
-import {Link} from "react-router-component" 
+import {Location, Locations, Link} from "react-router-component"
 import Message from "./Message"
 
+
+import Empty from "./Empty"
+import NewItem from "./edit/NewItem"
+import EditItem from "./edit/EditItem"
+import ViewItem from "./view/ViewItem"
 
 export default class List extends React.Component {
 
@@ -48,9 +53,12 @@ export default class List extends React.Component {
         </ul>
       </div>
       <div id="content" className="large-9 columns">
-        { (this.props.children) ? 
-          React.cloneElement(this.props.children, {user: this.props.user}) 
-          : null }
+        <Locations contextual>
+          <Location path="/" handler={Empty} />
+          <Location path="/new" handler={NewItem} {...this.props}/>
+          <Location path="/:id/edit" handler={EditItem} {...this.props}/>
+          <Location path="/:id" handler={ViewItem} {...this.props}/>
+        </Locations>
       </div>
     </div>
   }
@@ -58,7 +66,7 @@ export default class List extends React.Component {
   renderItem(key, item) {
     //!!! Where does type get found / passed
     var targetUrl = `/${this.props.type}/${key}`
-    return <li key={key} ><Link href={targetUrl} activeClassName="active">{item.name}</Link></li>
+    return <li key={key} ><Link global href={targetUrl} activeClassName="active">{item.name}</Link></li>
   }
 
  
