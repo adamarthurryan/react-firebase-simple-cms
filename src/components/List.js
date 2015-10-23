@@ -1,6 +1,6 @@
 import {fb, FBSetWatcher} from "../firebase"
 import React from "react"
-import {Link} from "react-router"
+import {Link} from "react-router-component" 
 import Message from "./Message"
 
 
@@ -14,13 +14,13 @@ export default class List extends React.Component {
     //create the listeners for this page in firebase
     //!!! for some reason the items don't stay in the right order
     //a problem here or in the FBSetWatcher
-    this.itemsWatcher = new FBSetWatcher(fb().child(this.props.params.type).orderByChild('name'));
+    this.itemsWatcher = new FBSetWatcher(fb().child(this.props.type).orderByChild('name'));
     this.itemsWatcher.on(items => this.setState({items}));
   }
 
   componentWillReceiveProps(nextProps) {
     this.itemsWatcher.off();
-    this.itemsWatcher = new FBSetWatcher(fb().child(nextProps.params.type).orderByChild('name'));
+    this.itemsWatcher = new FBSetWatcher(fb().child(nextProps.type).orderByChild('name'));
     this.itemsWatcher.on(items => this.setState({items}));
   }
 
@@ -42,7 +42,7 @@ export default class List extends React.Component {
 
     return <div className = "row">
       <div id="sidebar" className="large-3 columns">
-        <h1>{this.props.params.type}</h1>
+        <h1>{this.props.type}</h1>
         <ul className="side-nav">
           {itemLinks}
         </ul>
@@ -56,10 +56,9 @@ export default class List extends React.Component {
   }
 
   renderItem(key, item) {
-
     //!!! Where does type get found / passed
-    var targetUrl = `/list/${this.props.params.type}/${key}`
-    return <li key={key} ><Link to={targetUrl} activeClassName="active">{item.name}</Link></li>
+    var targetUrl = `/${this.props.type}/${key}`
+    return <li key={key} ><Link href={targetUrl} activeClassName="active">{item.name}</Link></li>
   }
 
  

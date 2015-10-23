@@ -8,20 +8,20 @@ import Message from "../Message"
 
 import {fb, FBObjectWatcher} from "../../firebase"
 
-import {Link} from "react-router"
+import {Link} from "react-router-component"
 
-
+ 
 export default class ViewItem extends React.Component {
 
   componentWillMount() {
     this.setState({item:null});
-    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.params.type+'/'+this.props.params.id));
+    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.type+'/'+this.props.id));
     this.itemWatcher.on(item => this.setState({item: item}));
   }
 
   componentWillReceiveProps(nextProps) {
     this.itemWatcher.off();
-    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.params.type+'/'+nextProps.params.id));
+    this.itemWatcher = new FBObjectWatcher(fb().child(this.props.type+'/'+nextProps.id));
     this.itemWatcher.on(item => this.setState({item: item}));
   }
 
@@ -36,16 +36,16 @@ export default class ViewItem extends React.Component {
 
     return <div>
       {this.renderItem()}
-      <Link to={`/edit/${this.props.params.type}/${this.props.params.id}`}>Edit</Link>
+      <Link href={`/${this.props.type}/${this.props.id}/edit`}>Edit</Link>
     </div>
   }
 
   renderItem() {
-    if (this.props.params.type == 'user')
+    if (this.props.type == 'user')
       return <User {...this.props} item={this.state.item}/>
-    else if (this.props.params.type == 'page')
+    else if (this.props.type == 'page')
       return <Page {...this.props} item={this.state.item}/>
-    else if (this.props.params.type == 'setting')
+    else if (this.props.type == 'setting')
       return <Setting {...this.props} item={this.state.item}/>
   }
 }

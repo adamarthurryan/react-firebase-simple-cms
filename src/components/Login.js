@@ -1,7 +1,10 @@
 import React from 'react';
 import {fb} from "../firebase"
+import {navigate} from '../router'
 
 export default class Login extends React.Component {
+
+
   render() {
 
 
@@ -37,6 +40,9 @@ export default class Login extends React.Component {
       {email, password}, 
       (error, authData) => {
         if (error) console.log("Error logging user in:",  error)
+        else {
+          navigate("/");
+        }
       }
     );
   }

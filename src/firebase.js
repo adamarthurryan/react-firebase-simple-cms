@@ -126,7 +126,7 @@ export class FBObjectWatcher {
 		//(a second request for the same data will return null!)
 		//apparently we don't need to call off()?
 		//but now it works???
-		//this.fbRef.off();
+		this.fbRef.off();
 
 		this.callback = null;
 	}

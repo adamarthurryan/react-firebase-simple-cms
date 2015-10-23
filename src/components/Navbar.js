@@ -1,6 +1,6 @@
 import React from "react"
-import {Link, IndexLink} from "react-router"
-import {fb} from "../firebase.js"
+import {Link} from "react-router-component"
+import {fb} from "../firebase.js" 
 
 export default class Navbar extends React.Component {
 
@@ -9,7 +9,7 @@ export default class Navbar extends React.Component {
     return <nav className="top-bar" data-topbar role="navigation">
       <ul className="title-area">
         <li className="name">
-          <h1><Link to="/">{this.props.settings.site.title}</Link></h1>
+          <h1><Link href="/">{this.props.settings.site.title}</Link></h1>
         </li>
         <li className="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
@@ -33,7 +33,7 @@ export default class Navbar extends React.Component {
     if (!this.props.user)
       return null;
 
-    return <li><Link to="/edit/setting">Settings</Link></li>
+    return <li><Link href="/setting/list">Settings</Link></li>
   }
 
   //render the edit items if there is a user logged in
@@ -44,7 +44,7 @@ export default class Navbar extends React.Component {
     return <li className="has-dropdown">
       <a>New</a>
         <ul className="dropdown">
-        <li><Link to="/edit/page/new">Page</Link></li>
+        <li><Link href="/page/new">Page</Link></li>
       </ul>
     </li>
   }
@@ -55,20 +55,20 @@ export default class Navbar extends React.Component {
     return <li className="has-dropdown">
       <a>List</a>
         <ul className="dropdown">
-        <li><Link to="/list/page">Pages</Link></li>
-        <li><Link to="/list/user">Users</Link></li>
+        <li><Link href="/page/list">Pages</Link></li>
+        <li><Link href="/user/list">Users</Link></li>
       </ul>
     </li>
   }
 
   renderUserDropdown() {
     if (!this.props.user)
-      return <li><Link to="/login">Log In</Link></li>;
+      return <li><Link href="/login">Log In</Link></li>;
     else {
       return <li className="has-dropdown">
         <a href="#">{this.props.user.name}</a>
         <ul className="dropdown">
-          <li><Link to="#" onclick={this.signout}>Log Out</Link></li>
+          <li><Link href="#" onClick={this.signout}>Log Out</Link></li>
         </ul>
       </li>
     }
@@ -77,7 +77,6 @@ export default class Navbar extends React.Component {
 
   //!!! Why is this never called?
   signout = evt => {
-    console.log("ZZZ")
     evt.preventDefault();
     fb().unauth();
   }

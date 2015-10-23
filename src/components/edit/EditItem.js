@@ -3,7 +3,8 @@ import EditPage from "./EditPage"
 import EditUser from "./EditUser"
 import EditSetting from "./EditSetting"
 import {fb} from "../../firebase"
-
+import Message from "../Message"
+import {navigate} from "../../router"
 
 // Todo: items being edited should save to a draft revision
 // Todo: items should have permalinks generated from their name/title
@@ -34,8 +35,8 @@ export default class EditItem extends React.Component {
   acceptProps(props) {
     //decide if this is a new page or an edit page
     // if this is not a new item, we can create an item ref for it
-    if (!this.props.route.isNew) {
-      this.itemRef = fb().child(this.props.params.type+'/'+this.props.params.id);
+    if (!this.props.isNew) {
+      this.itemRef = fb().child(this.props.type+'/'+this.props.id);
       this.itemRef.once("value", snapshot => {
         var item = snapshot.val();
         item._key = snapshot.key();
@@ -63,7 +64,7 @@ export default class EditItem extends React.Component {
    
     //null items will not be passed to the edit component if this is not a new item
     //however, the edit component is currently responsible for filling in the default values of new items   
-    if (!this.state.item && !this.props.route.isNew)
+    if (!this.state.item && !this.props.isNew)
       return <Message message="Loading..."/>
 
     //it might be possible to do away with per-item editing and use some generic form generating system
@@ -75,32 +76,31 @@ export default class EditItem extends React.Component {
       </div>
       <div className='large-offset-1 large-2 columns'>
         <button onClick={this.saveClick}>{"Save"}</button>
-        <button onClick={this.deleteClick}>{this.props.route.isNew?"Cancel":"Delete"}</button>
+        <button onClick={this.deleteClick}>{this.props.isNew?"Cancel":"Delete"}</button>
       </div>
     </div>;
   }
 
   renderEditComponent() {  
     //this should be made dynamic
-    if (this.props.params.type == 'user')
+    if (this.props.type == 'user')
       return <EditUser {...this.props} {...this.state} updateItem={this.updateItem}/>
-    else if (this.props.params.type == 'page')
+    else if (this.props.type == 'page')
       return <EditPage {...this.props} {...this.state} updateItem={this.updateItem}/>
-    else if (this.props.params.type == 'setting')
+    else if (this.props.type == 'setting')
       return <EditSetting {...this.props} {...this.state} updateItem={this.updateItem}/>
   }
 
   deleteClick = evt => {
     evt.preventDefault();
     //!!! Should confirm delete
-    if (!this.props.route.isNew) {
+    if (!this.props.isNew) {
       this.itemRef.off();
       this.itemRef.remove();
     }
 
     //!!! There is probably a better place to go than to the root!
-    //!!! should we really set the state null like this?
-    this.props.history.replaceState(null, "/");
+    navigate('/');
   }
 
   saveClick = evt => {
@@ -111,14 +111,13 @@ export default class EditItem extends React.Component {
     if (item._key)
       delete item._key;
 
-    if (!this.props.route.isNew) {
+    if (!this.props.isNew) {
       this.itemRef.update(item);
     }
     else {
-      this.itemRef = fb().child(this.props.params.type).push(item);
+      this.itemRef = fb().child(this.props.type).push(item);
 
-      //!!! should we really set the state null like this?
-      this.props.history.replaceState(null, "/edit/"+this.props.params.type+"/"+this.itemRef.key());      
+      navigate("/"+this.props.type+"/"+this.itemRef.key()+"/edit");      
     }
 
   }

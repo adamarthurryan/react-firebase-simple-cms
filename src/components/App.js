@@ -1,14 +1,18 @@
 import {fb, FBUserWatcher, FBObjectWatcher} from "../firebase"
 import React from "react"
-import {Link} from "react-router"
+import {Location, Locations, Link} from "react-router-component"
 
 import Navbar from "./Navbar"
 import List from "./List"
 import Login from "./Login"
 
+import NewItem from "./edit/NewItem"
+import EditItem from "./edit/EditItem"
+import ViewItem from "./view/ViewItem"
+
 const defaultSettings = {site: {name: "Serverless CMS"}};
 
-export default class App extends React.Component {
+export default class App extends React.Component {  
 
   //set initial state
   constructor() {
@@ -22,9 +26,7 @@ export default class App extends React.Component {
     this.fbUserWatcher.on(user => this.setState({user}));
     
     //load app specific info
-    this.fbSettingsWatcher.on(this.updateSettings);
-
-    
+    this.fbSettingsWatcher.on(this.updateSettings);    
   }
 
   componentWillUnmount() {
@@ -49,9 +51,14 @@ export default class App extends React.Component {
       </header>
 
       <div id="app" className="row">
-        { (this.props.children) ? 
-          React.cloneElement(this.props.children, {user: this.state.user, settings: this.state.settings}) 
-          : null }
+        <Locations>
+          <Location path="/" handler={List} type="page" user={this.state.user} settings={this.state.settings} />
+          <Location path="/login" handler={Login} user={this.state.user} settings={this.state.settings} />
+          <Location path="/:type/list" handler={List} user={this.state.user} settings={this.state.settings} />
+          <Location path="/:type/new" handler={NewItem} user={this.state.user} settings={this.state.settings} />
+          <Location path="/:type/:id/edit" handler={EditItem} user={this.state.user} settings={this.state.settings} />
+          <Location path="/:type/:id" handler={ViewItem} user={this.state.user} settings={this.state.settings} />
+        </Locations>
       </div>
       <footer className="row">
         <p className="text-right"><em>Simple serverless CMS with React and Firebase.</em></p>

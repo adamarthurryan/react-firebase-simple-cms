@@ -1,6 +1,6 @@
 import {fb} from "../firebase"
 import React from "react"
-import {Link} from "react-router"
+import {Link} from "react-router-component"
 
 export default class Admin extends React.Component {
 	constructor () {
