@@ -36,7 +36,7 @@ export default class ViewItem extends React.Component {
 
     return <div>
       {this.renderItem()}
-      <Link href={`/${this.props.type}/${this.props.id}/edit`}>Edit</Link>
+      <Link global href={`/${this.props.type}/${this.props.id}/edit`}>Edit</Link>
     </div>
   }
 

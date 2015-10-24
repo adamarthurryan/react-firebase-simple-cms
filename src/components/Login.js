@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {fb} from "../firebase"
 import {navigate} from '../router'
 
@@ -33,8 +34,8 @@ export default class Login extends React.Component {
   signin = evt => {
     evt.preventDefault();
 
-    var email = React.findDOMNode(this.refs.email).value,
-      password = React.findDOMNode(this.refs.password).value;
+    var email = ReactDOM.findDOMNode(this.refs.email).value,
+      password = ReactDOM.findDOMNode(this.refs.password).value;
 
     fb().authWithPassword(
       {email, password}, 
